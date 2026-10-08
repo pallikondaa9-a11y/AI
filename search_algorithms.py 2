@@ -1,0 +1,97 @@
+from collections import deque
+import heapq
+
+# Graph with path costs
+graph = {
+    "A": [("B", 1), ("C", 4)],
+    "B": [("D", 2), ("E", 5)],
+    "C": [("F", 1)],
+    "D": [("G", 3)],
+    "E": [("G", 1)],
+    "F": [("G", 2)],
+    "G": []
+}
+
+
+# Breadth-First Search
+def bfs(start, goal):
+    queue = deque([(start, [start])])
+    visited = set()
+
+    while queue:
+        node, path = queue.popleft()
+
+        if node == goal:
+            return path
+
+        if node not in visited:
+            visited.add(node)
+
+            for next_node, cost in graph[node]:
+                queue.append((next_node, path + [next_node]))
+
+    return None
+
+
+# Depth-First Search
+def dfs(start, goal):
+    stack = [(start, [start])]
+    visited = set()
+
+    while stack:
+        node, path = stack.pop()
+
+        if node == goal:
+            return path
+
+        if node not in visited:
+            visited.add(node)
+
+            for next_node, cost in reversed(graph[node]):
+                stack.append((next_node, path + [next_node]))
+
+    return None
+
+
+# Uniform-Cost Search
+def ucs(start, goal):
+    priority_queue = [(0, start, [start])]
+    visited = set()
+
+    while priority_queue:
+        cost, node, path = heapq.heappop(priority_queue)
+
+        if node == goal:
+            return path, cost
+
+        if node not in visited:
+            visited.add(node)
+
+            for next_node, edge_cost in graph[node]:
+                heapq.heappush(
+                    priority_queue,
+                    (cost + edge_cost, next_node, path + [next_node])
+                )
+
+    return None, None
+
+
+# Run the algorithms
+start = "A"
+goal = "G"
+
+bfs_path = bfs(start, goal)
+dfs_path = dfs(start, goal)
+ucs_path, ucs_cost = ucs(start, goal)
+
+print("Start:", start)
+print("Goal:", goal)
+
+print("\nBFS Path:", " -> ".join(bfs_path))
+print("BFS Path Cost:", len(bfs_path) - 1)
+
+print("\nDFS Path:", " -> ".join(dfs_path))
+print("DFS Path Cost:", len(dfs_path) - 1)
+
+print("\nUCS Path:", " -> ".join(ucs_path))
+print("UCS Path Cost:", ucs_cost)
