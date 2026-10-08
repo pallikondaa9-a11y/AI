@@ -1,0 +1,38 @@
+# Simple Rule-Based Expert System
+# Computer Troubleshooting System
+
+def diagnose(problem):
+
+    rules = {
+        "slow": "Your computer may have too many programs running. Try closing unnecessary programs.",
+        "internet": "Check your Wi-Fi connection and restart the router.",
+        "battery": "Check the charger and battery connection.",
+        "overheating": "Clean the air vents and make sure the cooling fan is working.",
+        "no_power": "Check the power cable, charger, and power button.",
+        "virus": "Run an antivirus scan and remove suspicious programs."
+    }
+
+    if problem in rules:
+        return rules[problem]
+
+    return "Sorry, I do not have a solution for this problem."
+
+
+print("================================")
+print("   COMPUTER EXPERT SYSTEM")
+print("================================")
+
+print("\nAvailable problems:")
+print("1. slow")
+print("2. internet")
+print("3. battery")
+print("4. overheating")
+print("5. no_power")
+print("6. virus")
+
+problem = input("\nEnter your problem: ").lower()
+
+solution = diagnose(problem)
+
+print("\nExpert System Advice:")
+print(solution)
